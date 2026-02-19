@@ -67,6 +67,8 @@ bind -x '"\C-r": fzf_gently__fzf_history'      # Command history
 | `flatpak_app` | Flatpak application selection | `flatpak run <C-f>` |
 | `history` | Command history search | At any time |
 
+> **Note:** The `history` module is not included in `fzf_gently__all_commands()` and must be bound separately (e.g., to `Ctrl+R`).
+
 ## Project Structure
 
 ```
