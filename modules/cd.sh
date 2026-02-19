@@ -7,7 +7,7 @@ fzf_gently__fzf_cd() {
         return 1
     fi
 
-    local selected=$(find . -type d -print0 2>/dev/null | \
+    selected=$(find . -type d -print0 2>/dev/null | \
              fzf --read0 --prompt='Dir: ' -1 --query="${query}" \
              --height=40% --border --header-first --reverse --preview='ls -aA1 {}' --preview-window=right:25 \
              --border-label="$prefix" --border-label-pos=3 --margin=1,0,0) && \

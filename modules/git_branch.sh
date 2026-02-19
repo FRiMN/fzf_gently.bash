@@ -16,7 +16,7 @@ fzf_gently__fzf_git_branch() {
         return 1
     fi
 
-    local selected=$(git branch -a --format='%(refname:short)' | \
+    selected=$(git branch -a --format='%(refname:short)' | \
              fzf --ansi --prompt='Branch: ' -1 --query="${query}" \
              --preview='fzf_gently__show_branch_info {}' --height=40% --border --header-first --reverse \
              --border-label="$prefix" --border-label-pos=3 --margin=1,0,0) && \

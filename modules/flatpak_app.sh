@@ -7,7 +7,7 @@ fzf_gently__fzf_flatpak_app() {
         return 1
     fi
 
-    local selected=$(flatpak list --app --columns=name,application | \
+    selected=$(flatpak list --app --columns=name,application | \
         tail -n +1 | \
         awk 'NF {
             id = $NF
