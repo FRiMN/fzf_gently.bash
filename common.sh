@@ -1,3 +1,9 @@
+#!/usr/bin/env bash
+#
+# Common utility functions for fzf_gently.bash
+# Provides core functions used by all modules
+#
+
 # any_f FUNC1 [FUNC2 ...]
 # Выполняет переданные функции по порядку и возвращает 0 (успех),
 # если хотя бы одна из них вернула 0. Остальные функции после первой

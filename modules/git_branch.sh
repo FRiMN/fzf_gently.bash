@@ -1,3 +1,10 @@
+#!/usr/bin/env bash
+#
+# git_branch module - Git branch selection
+# Activates on: git checkout <C-f> or git branch <C-f>
+# Uses fzf to select branches with commit preview
+#
+
 fzf_gently__show_branch_info() {
     local branch="${1:-HEAD}"
     local commit_date

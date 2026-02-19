@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
-
+#
+# Entry point for fzf_gently.bash framework
+# Loads all modules and defines the main command dispatcher
+#
 #SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SCRIPT_DIR="${BASH_SOURCE[0]%/*}"
 

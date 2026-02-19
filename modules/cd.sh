@@ -1,3 +1,10 @@
+#!/usr/bin/env bash
+#
+# cd module - Interactive directory navigation
+# Activates on: cd <C-f>
+# Uses fzf to select directories with preview
+#
+
 fzf_gently__fzf_cd() {
     local prefix query selected
     if [[ "$READLINE_LINE" =~ ^[[:space:]]*(cd)[[:space:]]+(.*)$ ]]; then

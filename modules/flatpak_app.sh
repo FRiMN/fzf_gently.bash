@@ -1,3 +1,10 @@
+#!/usr/bin/env bash
+#
+# flatpak_app module - Flatpak application selection
+# Activates on: flatpak run <C-f>
+# Uses fzf to select installed Flatpak applications
+#
+
 fzf_gently__fzf_flatpak_app() {
     local prefix query selected
     if [[ "$READLINE_LINE" =~ ^([[:space:]]*flatpak[[:space:]]+(run))[[:space:]]*(.*)$ ]]; then

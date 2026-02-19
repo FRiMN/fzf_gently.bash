@@ -1,3 +1,10 @@
+#!/usr/bin/env bash
+#
+# history module - Command history search
+# Activates at any time (typically bound to Ctrl+R)
+# Uses fzf to search and select from command history
+#
+
 fzf_gently__fzf_history() {
     local prefix selected
     prefix=${READLINE_LINE}
