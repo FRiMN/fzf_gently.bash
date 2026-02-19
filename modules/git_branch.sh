@@ -5,7 +5,7 @@ fzf_gently__show_branch_info() {
     printf "\033[32mLast commit:\033[0m %s\n" "$commit_date"
     git log -n 10 --pretty=format:"[%an] %s" $branch
 }
-#export -f fzf_gently__show_branch_info
+export -f fzf_gently__show_branch_info
 
 fzf_gently__fzf_git_branch() {
     local prefix query selected
