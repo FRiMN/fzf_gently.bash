@@ -22,7 +22,7 @@ fzf_gently__any_f() {
 # strip STRING
 # Removes leading and trailing whitespace from the input string.
 # Returns the trimmed string via stdout.
-fzf_gently__strip() {
+fzf_gently___strip() {
     local var="$*"
     # Remove leading and trailing whitespace using parameter expansion
     var="${var#"${var%%[![:space:]]*}"}"   # Remove leading whitespace
@@ -65,11 +65,11 @@ fzf_gently___cmd_matches() {
     fi
 
     if [[ "$READLINE_LINE" =~ $pattern ]]; then
-        __prefix=$(fzf_gently__strip "${BASH_REMATCH[1]}")
+        __prefix=$(fzf_gently___strip "${BASH_REMATCH[1]}")
         if [[ -n "$subcmds" ]]; then
-            __query=$(fzf_gently__strip "${BASH_REMATCH[3]}")
+            __query=$(fzf_gently___strip "${BASH_REMATCH[3]}")
         else
-            __query=$(fzf_gently__strip "${BASH_REMATCH[2]}")
+            __query=$(fzf_gently___strip "${BASH_REMATCH[2]}")
         fi
         return 0
     fi
