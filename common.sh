@@ -44,3 +44,32 @@ fzf_gently___fzf_set_readline() {
         READLINE_POINT=${#READLINE_LINE}
     fi
 }
+
+# Проверяет READLINE_LINE на соответствие (cmd, subcmd)
+# Использование: fzf_gently___cmd_matches cmd subcmds prefix_var query_var
+# Возвращает 0 и записывает в переданные переменные prefix/query если совпало
+fzf_gently___cmd_matches() {
+    local cmd="$1"
+    local subcmds="$2"
+    local -n __prefix=$3
+    local -n __query=$4
+
+    local pattern
+    if [[ -n "$subcmds" ]]; then
+        local alts=${subcmds// /|}
+        pattern="^([[:space:]]*${cmd}[[:space:]]+(${alts}))[[:space:]]*(.*)$"
+    else
+        pattern="^([[:space:]]*${cmd})[[:space:]]+(.*)$"
+    fi
+
+    if [[ "$READLINE_LINE" =~ $pattern ]]; then
+        __prefix=$(fzf_gently__strip "${BASH_REMATCH[1]}")
+        if [[ -n "$subcmds" ]]; then
+            __query=$(fzf_gently__strip "${BASH_REMATCH[3]}")
+        else
+            __query=$(fzf_gently__strip "${BASH_REMATCH[2]}")
+        fi
+        return 0
+    fi
+    return 1
+}

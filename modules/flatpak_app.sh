@@ -7,12 +7,7 @@
 
 fzf_gently__fzf_flatpak_app() {
     local prefix query selected
-    if [[ "$READLINE_LINE" =~ ^([[:space:]]*flatpak[[:space:]]+(run))[[:space:]]*(.*)$ ]]; then
-        prefix=$(fzf_gently__strip "${BASH_REMATCH[1]}")
-        query=$(fzf_gently__strip "${BASH_REMATCH[3]}")
-    else
-        return 1
-    fi
+    fzf_gently___cmd_matches "flatpak" "run" prefix query || return 1
 
     selected=$(flatpak list --app --columns=name,application | \
         tail -n +1 | \

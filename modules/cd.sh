@@ -7,12 +7,7 @@
 
 fzf_gently__fzf_cd() {
     local prefix query selected
-    if [[ "$READLINE_LINE" =~ ^[[:space:]]*(cd)[[:space:]]+(.*)$ ]]; then
-        prefix=$(fzf_gently__strip "${BASH_REMATCH[1]}")
-        query=$(fzf_gently__strip "${BASH_REMATCH[2]}")
-    else
-        return 1
-    fi
+    fzf_gently___cmd_matches "cd" "" prefix query || return 1
 
     selected=$(find . -type d -print0 2>/dev/null | \
              fzf --read0 --prompt='Dir: ' -1 --query="${query}" \

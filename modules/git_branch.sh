@@ -16,12 +16,7 @@ export -f fzf_gently__show_branch_info
 
 fzf_gently__fzf_git_branch() {
     local prefix query selected
-    if [[ "$READLINE_LINE" =~ ^([[:space:]]*git[[:space:]]+(checkout|branch))[[:space:]]*(.*)$ ]]; then
-        prefix=$(fzf_gently__strip "${BASH_REMATCH[1]}")
-        query=$(fzf_gently__strip "${BASH_REMATCH[3]}")
-    else
-        return 1
-    fi
+    fzf_gently___cmd_matches "git" "checkout branch" prefix query || return 1
 
     selected=$(git branch -a --format='%(refname:short)' | \
              fzf --ansi --prompt='Branch: ' -1 --query="${query}" \
