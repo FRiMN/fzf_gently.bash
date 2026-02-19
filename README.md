@@ -24,6 +24,59 @@ git checkout fea<TAB>        # ← Standard bash_completion works
 git checkout fea<C-Space>    # ← fzf opens for branch selection
 ```
 
+## How It Works
+
+### The `any_f` Function
+
+The core of fzf_gently.bash is the `fzf_gently__any_f` function. It implements **short-circuit evaluation** (like logical OR):
+
+```bash
+fzf_gently__any_f \
+    fzf_gently__fzf_git_branch \
+    fzf_gently__fzf_flatpak_app \
+    fzf_gently__fzf_cd
+```
+
+**How it works:**
+1. Executes functions in order from first to last
+2. **Stops immediately** when any function returns exit code `0` (success)
+3. Returns `0` if at least one function succeeded
+4. Returns `1` only if **all** functions failed
+
+### Module Pattern Matching
+
+Each module follows this pattern:
+
+```bash
+fzf_gently__fzf_module_name() {
+    # Check if current command matches this module's pattern
+    if [[ "$READLINE_LINE" =~ ^pattern$ ]]; then
+        # Launch fzf and set result to READLINE_LINE
+        return 0  # Success - stop processing other modules
+    else
+        return 1  # Not our command - try next module
+    fi
+}
+```
+
+**Example flow for `git checkout <C-f>`:**
+
+1. `fzf_gently__fzf_git_branch` checks: "Does this match `git checkout`?" → **Yes!** → Launches fzf → Returns `0` → Stop
+
+2. `fzf_gently__fzf_flatpak_app` never runs (short-circuit)
+
+3. `fzf_gently__fzf_cd` never runs (short-circuit)
+
+**Example flow for `flatpak run <C-f>`:**
+
+1. `fzf_gently__fzf_git_branch` checks: "Does this match?" → No → Returns `1` → Continue
+
+2. `fzf_gently__fzf_flatpak_app` checks: "Does this match?" → **Yes!** → Launches fzf → Returns `0` → Stop
+
+3. `fzf_gently__fzf_cd` never runs
+
+This approach ensures **only the first matching module** handles the command.
+
 ## Installation
 
 ### Requirements
@@ -57,6 +110,22 @@ bind -x '"\C-t": fzf_gently__all_commands'    # Ctrl+T
 bind -x '"\C-g": fzf_gently__fzf_git_branch'   # Git only
 bind -x '"\C-r": fzf_gently__fzf_history'      # Command history
 ```
+
+### Custom Module Combinations
+
+You can create your own function with a custom set of modules:
+
+```bash
+_fzf_smart() {
+    fzf_gently__any_f \
+    fzf_gently__fzf_git_branch \
+    fzf_gently__fzf_flatpak_app \
+    fzf_gently__fzf_cd
+}
+bind -x '"\C-f": _fzf_smart'
+```
+
+**Important:** `fzf_gently__any_f` must always be the **first** argument, followed by the list of modules you want to check. The function will try each module in order and stop at the first one that matches the current command.
 
 ## Modules
 
