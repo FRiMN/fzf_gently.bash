@@ -5,10 +5,10 @@
 #
 
 # any_f FUNC1 [FUNC2 ...]
-# Выполняет переданные функции по порядку и возвращает 0 (успех),
-# если хотя бы одна из них вернула 0. Остальные функции после первой
-# успешной не вызываются (short-circuit evaluation).
-# Возвращает 1, если ни одна функция не завершилась успешно.
+# Executes the provided functions in order and returns 0 (success)
+# if at least one of them returns 0. Subsequent functions after the first
+# successful one are not called (short-circuit evaluation).
+# Returns 1 if no function completed successfully.
 fzf_gently__any_f() {
     local func
     for func in "$@"; do
@@ -33,7 +33,7 @@ fzf_gently___strip() {
 fzf_set_readline__pattern="^('|\")?[[:space:]]*('|\")?$"
 fzf_gently___fzf_set_readline() {
     if [[ $# -lt 2 ]]; then
-        echo "Ошибка: нужно минимум 2 аргумента" >&2
+        echo "Error: at least 2 arguments required" >&2
         return 1
     fi
 
@@ -45,9 +45,9 @@ fzf_gently___fzf_set_readline() {
     fi
 }
 
-# Проверяет READLINE_LINE на соответствие (cmd, subcmd)
-# Использование: fzf_gently___cmd_matches cmd subcmds prefix_var query_var
-# Возвращает 0 и записывает в переданные переменные prefix/query если совпало
+# Checks READLINE_LINE against a (cmd, subcmd) pattern
+# Usage: fzf_gently___cmd_matches cmd subcmds prefix_var query_var
+# Returns 0 and writes to the provided prefix/query variables if matched
 fzf_gently___cmd_matches() {
     local cmd="$1"
     local subcmds="$2"
