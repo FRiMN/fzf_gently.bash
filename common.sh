@@ -31,6 +31,9 @@ fzf_gently___strip() {
 }
 
 fzf_set_readline__pattern="^('|\")?[[:space:]]*('|\")?$"
+# fzf_set_readline PREFIX SELECTED
+# Sets the READLINE_LINE with the prefix and selected value.
+# Only updates if the selected value is non-empty and not just quotes/spaces.
 fzf_gently___fzf_set_readline() {
     if [[ $# -lt 2 ]]; then
         echo "Error: at least 2 arguments required" >&2

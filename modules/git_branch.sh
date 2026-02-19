@@ -5,6 +5,10 @@
 # Uses fzf to select branches with commit preview
 #
 
+# show_branch_info [BRANCH]
+# Displays information about a git branch for fzf preview.
+# Shows the last commit date and the last 10 commits.
+# Defaults to HEAD if no branch is specified.
 fzf_gently__show_branch_info() {
     local branch="${1:-HEAD}"
     local commit_date
