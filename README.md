@@ -77,6 +77,30 @@ fzf_gently__fzf_module_name() {
 
 This approach ensures **only the first matching module** handles the command.
 
+### The `cmd_matches` Function
+
+The `fzf_gently___cmd_matches` function simplifies pattern matching for command parsing:
+
+```bash
+# Basic command without subcommands
+fzf_gently___cmd_matches "cd" "" prefix query || return 1
+# Matches: "cd <query>"
+
+# Command with multiple subcommands (OR logic)
+fzf_gently___cmd_matches "git" "checkout branch" prefix query || return 1
+# Matches: "git checkout <query>" or "git branch <query>"
+```
+
+**Parameters:**
+- `cmd` — main command name (e.g., "git", "cd")
+- `subcmds` — space-separated subcommands (e.g., "checkout branch", empty string for none)
+- `prefix_var` — nameref variable to store matched prefix (cmd + subcmd)
+- `query_var` — nameref variable to store user input after the command
+
+**Returns:**
+- `0` if READLINE_LINE matches the pattern (variables set)
+- `1` if no match (continue to next module)
+
 ## Installation
 
 ### Requirements
@@ -143,7 +167,7 @@ bind -x '"\C-f": _fzf_smart'
 ```
 fzf_gently.bash/
 ├── init.sh           # Entry point, loads all modules
-├── common.sh         # Common functions (any_f, strip, set_readline)
+├── common.sh         # Common functions (any_f, strip, cmd_matches, set_readline)
 ├── modules/
 │   ├── cd.sh         # Directory navigation
 │   ├── git_branch.sh # Git branch operations
@@ -154,21 +178,18 @@ fzf_gently.bash/
 
 ## Creating a Custom Module
 
+### Basic Module (single command)
+
 ```bash
 # ~/.config/fzf_gently.bash/modules/my_module.sh
 
 fzf_gently__fzf_my_feature() {
     local prefix query selected
     
-    # Check if the current line matches our pattern
-    if [[ "$READLINE_LINE" =~ ^([[:space:]]*mycommand)[[:space:]]+(.*)$ ]]; then
-        prefix=$(fzf_gently__strip "${BASH_REMATCH[1]}")
-        query=$(fzf_gently__strip "${BASH_REMATCH[2]}")
-    else
-        return 1  # Not our command, pass control forward
-    fi
+    # Check if the current line matches our command
+    fzf_gently___cmd_matches "mycommand" "" prefix query || return 1
     
-    # Launch fzf
+    # Launch fzf with the query pre-filled
     selected=$(my_data_source | \
         fzf --prompt='Select: ' -1 --query="${query}" \
             --height=40% --border) && \
@@ -176,12 +197,37 @@ fzf_gently__fzf_my_feature() {
 }
 ```
 
+### Advanced Module (multiple subcommands)
+
+```bash
+fzf_gently__fzf_docker() {
+    local prefix query selected
+    
+    # Matches: "docker start <query>" or "docker stop <query>"
+    fzf_gently___cmd_matches "docker" "start stop" prefix query || return 1
+    
+    selected=$(docker ps --format '{{.Names}}' | \
+        fzf --prompt='Container: ' -1 --query="${query}" \
+            --height=40% --border) && \
+    fzf_gently___fzf_set_readline "$prefix" "$selected"
+}
+```
+
+**Key points:**
+1. Always declare `local prefix query selected` at the start
+2. Use `fzf_gently___cmd_matches` to parse READLINE_LINE
+3. Return 1 immediately if no match (`|| return 1`)
+4. Use `fzf_gently___fzf_set_readline` to set the result
+
+### Register your module
+
 Add to `init.sh`:
 
 ```bash
 fzf_gently__all_commands() {
     fzf_gently__any_f \
     fzf_gently__fzf_my_feature \  # ← Your new module
+    fzf_gently__fzf_docker \
     fzf_gently__fzf_git_branch \
     fzf_gently__fzf_flatpak_app \
     fzf_gently__fzf_cd
