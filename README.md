@@ -113,9 +113,17 @@ fzf_gently___cmd_matches "git" "checkout branch" prefix query || return 1
 ```bash
 # Clone the repository
 git clone https://github.com/FRiMN/fzf_gently.bash.git ~/.config/fzf_gently.bash
+```
 
-# Add to ~/.bashrc
+Add to ~/.bashrc:
+```bash
+# Load fzf_gently code
 source ~/.config/fzf_gently.bash/init.sh
+
+# Activate all fzf_gently context-dependent functionality
+bind -x '"\C-f": fzf_gently__all_commands'
+# Activate fzf_gently history functionality
+bind -x '"\C-r": fzf_gently__fzf_history'
 ```
 
 ## Key Bindings Configuration
