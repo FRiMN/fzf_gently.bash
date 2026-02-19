@@ -121,7 +121,7 @@ Add to ~/.bashrc:
 source ~/.config/fzf_gently.bash/init.sh
 
 # Activate all fzf_gently context-dependent functionality
-bind -x '"\C-f": fzf_gently__all_commands'
+bind -x '"\C-f": fzf_gently__all_context_dependent'
 # Activate fzf_gently history functionality
 bind -x '"\C-r": fzf_gently__fzf_history'
 ```
@@ -132,11 +132,11 @@ Add to `~/.bashrc` after the `source`:
 
 ```bash
 # Activate fzf_gently for the current command (main binding)
-bind -x '"\C-f": fzf_gently__all_commands'
+bind -x '"\C-f": fzf_gently__all_context_dependent'
 
 # Or use alternative combinations:
-bind -x '"\C-@": fzf_gently__all_commands'    # Ctrl+Space
-bind -x '"\C-t": fzf_gently__all_commands'    # Ctrl+T
+bind -x '"\C-@": fzf_gently__all_context_dependent'    # Ctrl+Space
+bind -x '"\C-t": fzf_gently__all_context_dependent'    # Ctrl+T
 
 # Individual modules (optional)
 bind -x '"\C-g": fzf_gently__fzf_git_branch'   # Git only
@@ -232,7 +232,7 @@ fzf_gently__fzf_docker() {
 Add to `init.sh`:
 
 ```bash
-fzf_gently__all_commands() {
+fzf_gently__all_context_dependent() {
     fzf_gently__any_f \
     fzf_gently__fzf_my_feature \  # ← Your new module
     fzf_gently__fzf_docker \

@@ -18,9 +18,8 @@ _load_files() {
 source "${SCRIPT_DIR}/common.sh"
 _load_files "${SCRIPT_DIR}/modules"
 
-# Exclude fzf_gently__fzf_history.
-# Include only modules for commands (prefixes).
-fzf_gently__all_commands() {
+# Include only context-dependent modules.
+fzf_gently__all_context_dependent() {
     fzf_gently__any_f \
     fzf_gently__fzf_git_branch \
     fzf_gently__fzf_flatpak_app \
