@@ -168,21 +168,7 @@ bind -x '"\C-f": _fzf_smart'
 | `flatpak_app` | Flatpak application selection | `flatpak run <C-f>` |
 | `history` | Command history search | At any time |
 
-> **Note:** The `history` module is not included in `fzf_gently__all_commands()` and must be bound separately (e.g., to `Ctrl+R`).
-
-## Project Structure
-
-```
-fzf_gently.bash/
-├── init.sh           # Entry point, loads all modules
-├── common.sh         # Common functions (any_f, strip, cmd_matches, set_readline)
-├── modules/
-│   ├── cd.sh         # Directory navigation
-│   ├── git_branch.sh # Git branch operations
-│   ├── flatpak_app.sh# Launching Flatpak applications
-│   └── history.sh    # History search
-└── README.md
-```
+> **Note:** The `history` module is not included in `fzf_gently__all_context_dependent()` and must be bound separately (e.g., to `Ctrl+R`).
 
 ## Creating a Custom Module
 
