@@ -56,6 +56,8 @@ fzf_gently___cmd_matches() {
 
     local pattern
     if [[ -n "$subcmds" ]]; then
+        # Convert space-separated subcmds to regex alternation (OR)
+        # e.g., "checkout branch" -> "checkout|branch" for pattern matching
         local alts=${subcmds// /|}
         pattern="^([[:space:]]*${cmd}[[:space:]]+(${alts}))[[:space:]]*(.*)$"
     else
