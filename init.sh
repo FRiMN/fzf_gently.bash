@@ -23,5 +23,7 @@ fzf_gently__all_context_dependent() {
     fzf_gently__any_f \
     fzf_gently__fzf_git_branch \
     fzf_gently__fzf_flatpak_app \
+    fzf_gently__fzf_ollama_model \
+    fzf_gently__fzf_ollama_running_model \
     fzf_gently__fzf_cd
 }
