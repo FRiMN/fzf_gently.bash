@@ -43,7 +43,12 @@ fzf_gently___fzf_set_readline() {
     local selected="$2"
     local prefix="$1"
     if [[ -n "$selected" ]] && [[ ! "$selected" =~ $fzf_set_readline__pattern ]]; then
-        READLINE_LINE="$prefix $selected"
+        if [[ -n "$prefix" ]]; then
+            READLINE_LINE="$prefix $selected"
+        else
+            READLINE_LINE="$selected"
+        fi
+
         READLINE_POINT=${#READLINE_LINE}
     fi
 }
